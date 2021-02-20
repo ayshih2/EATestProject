@@ -15,6 +15,7 @@ namespace EAEmployeeTest
         [TestMethod]
         public void TestMethod1()
         {
+            // need to set options or else click won't work -- IEDriver bug (?)
             InternetExplorerOptions options = new InternetExplorerOptions();
             options.EnableNativeEvents = false;
             _driver = new InternetExplorerDriver(options);
