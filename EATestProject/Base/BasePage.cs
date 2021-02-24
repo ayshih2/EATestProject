@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.PageObjects;
 
 namespace EAAutoFramework.Base
 {
-    class BasePage
+    public abstract class BasePage : Base
     {
+        public BasePage()
+        {
+            PageFactory.InitElements(DriverContext.Driver, this);
+        }
     }
 }
