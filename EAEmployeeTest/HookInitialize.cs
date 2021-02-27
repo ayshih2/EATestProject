@@ -1,4 +1,5 @@
 ﻿using EAAutoFramework.Base;
+using Sikuli4Net.sikuli_UTIL;
 using TechTalk.SpecFlow;
 
 namespace EAEmployeeTest
@@ -8,6 +9,8 @@ namespace EAEmployeeTest
     {
         public HookInitialize() : base(BrowserType.InternetExplorer)
         {
+            //APILauncher launch = new APILauncher(true);
+            //launch.Start();
             InitializeSettings();
             NavigateSite();
         }

@@ -7,23 +7,15 @@ namespace EAEmployeeTest.Pages
 {
     internal class CreateEmployeePage : BasePage
     {
-        [FindsBy(How = How.Id, Using = "Name")]
-        IWebElement txtName { get; set; }
+        /*[FindsBy(How = How.Id, Using = "Name")]
+        IWebElement txtName { get; set; } */
 
-        [FindsBy(How = How.Id, Using = "Salary")]
-        IWebElement txtSalary { get; set; }
-
-        [FindsBy(How = How.Id, Using = "DurationWorked")]
-        IWebElement txtDurationWorked { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Grade")]
-        IWebElement txtGrade { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Email")]
-        IWebElement txtEmail { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//input[@value='Create']")]
-        IWebElement btnCreateEmployee { get; set; }
+        public IWebElement txtName => DriverContext.Driver.FindElement(By.Id("Name"));
+        public IWebElement txtSalary => DriverContext.Driver.FindElement(By.Id("Salary"));
+        public IWebElement txtDurationWorked => DriverContext.Driver.FindElement(By.Id("DurationWorked"));
+        public IWebElement txtGrade => DriverContext.Driver.FindElement(By.Id("Grade"));
+        public IWebElement btnCreateEmployee => DriverContext.Driver.FindElement(By.XPath("//input[@value='Create']"));
+        public IWebElement txtEmail => DriverContext.Driver.FindElement(By.Id("Email"));
 
         internal void ClickCreateButton()
         {

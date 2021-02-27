@@ -8,23 +8,10 @@ namespace EAEmployeeTest.Pages
 {
     class LoginPage : BasePage
     {
-        /*
-        // objects for login page
-        [FindsBy(How = How.Id, Using = "loginLink")]
-        public IWebElement lnkLogin { get; set; }
+        public IWebElement txtUserName => DriverContext.Driver.FindElement(By.Id("UserName"));
+        public IWebElement txtPassword => DriverContext.Driver.FindElement(By.Id("Password"));
+        public IWebElement btnLogin => DriverContext.Driver.FindElement(By.CssSelector("input.btn"));
 
-        [FindsBy(How = How.LinkText, Using = "Employee List")]
-        public IWebElement lnkEmployeeList { get; set; }*/
-
-        [FindsBy(How = How.Id, Using = "UserName")]
-        public IWebElement txtUserName { get; set; }
-
-        [FindsBy(How = How.Id, Using = "Password")]
-        public IWebElement txtPassword { get; set; }
-
-        [FindsBy(How = How.CssSelector, Using = "input.btn")]
-        public IWebElement btnLogin { get; set; }
-    
         public void Login(string userName, string password)
         {
             var wait = new WebDriverWait(DriverContext.Driver, new TimeSpan(0, 0, 30));
@@ -39,22 +26,5 @@ namespace EAEmployeeTest.Pages
             btnLogin.Submit();
             return GetInstance<HomePage>();
         }
-
-        /*
-        public void ClickLoginLink()
-        {
-            lnkLogin.Click();
-            var wait = new WebDriverWait(DriverContext.Driver, new TimeSpan(0, 0, 30));
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("UserName")));
-        }
-    
-        public EmployeeListPage ClickEmployeeList()
-        {
-            var wait = new WebDriverWait(DriverContext.Driver, new TimeSpan(0, 0, 30));
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Employee List")));
-            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            lnkEmployeeList.Click();
-            return GetInstance<EmployeeListPage>();
-        }*/
     }
 }

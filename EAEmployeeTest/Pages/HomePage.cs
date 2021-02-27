@@ -9,20 +9,11 @@ namespace EAEmployeeTest.Pages
 {
     internal class HomePage : BasePage
     {
-
-        //[FindsBy(How = How.LinkText, Using = "Log in")]
-        //IWebElement lnkLogin { get; set; }
-        [FindsBy(How = How.Id, Using = "loginLink")]
-        public IWebElement lnkLogin { get; set; }
-
-        [FindsBy(How = How.LinkText, Using = "Employee List")]
-        IWebElement lnkEmployeeList { get; set; }
-
-        [FindsBy(How = How.XPath, Using = "//a[@title='Manage']")]
-        IWebElement lnkLoggedInUser { get; set; }
-
-        [FindsBy(How = How.LinkText, Using = "Log off")]
-        IWebElement lnkLogoff { get; set; }
+        public IWebElement lnkLogin => DriverContext.Driver.FindElement(By.Id("loginLink"));
+        public IWebElement lnkEmployeeList => DriverContext.Driver.FindElement(By.LinkText("Employee List"));
+        public IWebElement aboutBtn => DriverContext.Driver.FindElement(By.LinkText("About"));
+        public IWebElement lnkLoggedInUser => DriverContext.Driver.FindElement(By.XPath("//a[@title='Manage']"));
+        public IWebElement lnkLogoff => DriverContext.Driver.FindElement(By.LinkText("Log off"));
 
         internal void CheckIfLoginExist()
         {
@@ -38,6 +29,11 @@ namespace EAEmployeeTest.Pages
         internal string GetLoggedInUser()
         {
             return lnkLoggedInUser.GetLinkText();
+        }
+
+        public void ClickAboutTab()
+        {
+            aboutBtn.Click();
         }
 
         public EmployeeListPage ClickEmployeeList()

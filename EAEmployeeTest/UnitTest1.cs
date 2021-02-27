@@ -7,6 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.IE;
 using EAAutoFramework.Config;
 using EAAutoFramework.Extensions;
+using OpenQA.Selenium;
+using Sikuli4Net.sikuli_UTIL;
+//using Sikuli4Net.sikuli_REST;
+using SikuliSharp;
 
 namespace EAEmployeeTest
 {
@@ -17,7 +21,7 @@ namespace EAEmployeeTest
         // string url = ConfigReader.InitializeTest();
         
         [TestMethod]
-        public void TestMethod1()
+        public void GoToAboutPage()
         {
             
             //OpenBrowser(BrowserType.InternetExplorer);
@@ -34,17 +38,47 @@ namespace EAEmployeeTest
             ExcelHelpers.PopulateInCollection(fileName);
 
             CurrentPage = GetInstance<HomePage>();
-            //CurrentPage.As<HomePage>().CheckIfLoginExist();
+            CurrentPage.As<HomePage>().ClickAboutTab();
+            Thread.Sleep(3000);
+            DriverContext.Driver.Quit();
+        }
+
+        [TestMethod]
+        public void TestSikuli()
+        {
+
+            /*Pattern visitNowBtn = new Pattern(@"C:\Patterns\RegisterButton.png");
+            Screen src = new Screen();
+            src.Click(visitNowBtn);
+            //launch.Stop();
+            Thread.Sleep(3000);
+            //DriverContext.Driver.Quit();*/
+
+            using (var session = Sikuli.CreateSession())
+            {
+                //Login
+                var username = Patterns.FromFile(@"C:\Patterns\RegisterButton.png", 0.9f);
+                session.Click(username);
+
+            }
+        }
+
+        [TestMethod]
+        public void DeleteEmployee()
+        {
+            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
+            ExcelHelpers.PopulateInCollection(fileName);
+
+            CurrentPage = GetInstance<HomePage>();
             CurrentPage = CurrentPage.As<HomePage>().ClickLogin();
-            System.Console.WriteLine(ExcelHelpers.ReadData(1, "UserName"));
-            System.Console.WriteLine(ExcelHelpers.ReadData(1, "Password"));
             CurrentPage.As<LoginPage>().Login(ExcelHelpers.ReadData(1, "UserName"), ExcelHelpers.ReadData(1, "Password"));
             CurrentPage = CurrentPage.As<LoginPage>().ClickLoginButton();
-            // https://stackoverflow.com/questions/5574802/selenium-2-0b3-ie-webdriver-click-not-firing
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
             CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            CurrentPage.As<EmployeeListPage>().ClickCreateNew();
+            CurrentPage = CurrentPage.As<EmployeeListPage>().DeleteEmployee(0);
+            //CurrentPage = CurrentPage.As<DeletePage>().GoBackToList();
+            CurrentPage.As<DeletePage>().ConfirmDelete();
             Thread.Sleep(3000);
             DriverContext.Driver.Quit();
         }
@@ -60,14 +94,32 @@ namespace EAEmployeeTest
             CurrentPage = CurrentPage.As<HomePage>().ClickLogin();
             CurrentPage.As<LoginPage>().Login(ExcelHelpers.ReadData(1, "UserName"), ExcelHelpers.ReadData(1, "Password"));
             CurrentPage = CurrentPage.As<LoginPage>().ClickLoginButton();
-         
+            // https://stackoverflow.com/questions/5574802/selenium-2-0b3-ie-webdriver-click-not-firing 
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
             CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
             CurrentPage = CurrentPage.As<EmployeeListPage>().ClickCreateNew();
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            CurrentPage.As<CreateEmployeePage>().CreateEmployee("name", "10000", "0", "10", "name@email.com");
+            CurrentPage.As<CreateEmployeePage>().CreateEmployee("john appleseed", "10000", "0", "10", "ja@testemail.com");
             CurrentPage.As<CreateEmployeePage>().ClickCreateButton();
+            Thread.Sleep(3000);
+            DriverContext.Driver.Quit();
+        }
+
+        [TestMethod]
+        public void HandleTable()
+        {
+            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
+            ExcelHelpers.PopulateInCollection(fileName);
+
+            CurrentPage = GetInstance<HomePage>();
+            CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
+            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
+            var table = CurrentPage.As<EmployeeListPage>().GetEmployeeList();
+                
+            // ~ 17 mins to execute
+            HtmlTableHelper.ReadTable(table);
+            HtmlTableHelper.PerformActionOnCell("1", "Name", "Karthik", "Delete");
             Thread.Sleep(3000);
             DriverContext.Driver.Quit();
         }

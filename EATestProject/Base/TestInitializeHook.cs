@@ -41,7 +41,6 @@ namespace EAAutoFramework.Base
                     break;
             }
         }
-
         public virtual void NavigateSite()
         {
             DriverContext.Browser.GoToUrl(Settings.AUT);

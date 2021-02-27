@@ -12,7 +12,7 @@ namespace EAAutoFramework.Base
     {
         public BasePage()
         {
-            PageFactory.InitElements(DriverContext.Driver, this);
+            //PageFactory.InitElements(DriverContext.Driver, this);
         }
     }
 }

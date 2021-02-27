@@ -3,7 +3,7 @@
 	<RunSettings>
 		<AUT>http://eaapp.somee.com/</AUT>
 		<!-- Possible flag Chrome,Firefox, IE-->
-		<Browser>Firefox</Browser>
+		<Browser>IE</Browser>
 		<!-- Possible flag Smoke, Regression, Unit  -->
 		<TestType>SmokeTest</TestType>
 		<!-- Possible Flag Y, N -->

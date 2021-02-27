@@ -31,14 +31,17 @@ namespace EAAutoFramework.Helpers
 
                 var colDatas = row.FindElements(By.TagName("td"));
                 //Store data only if it has value in row
+                LogHelpers.Write("=====");
                 if (colDatas.Count != 0)
+                    LogHelpers.Write(rowIndex.ToString());
                     foreach (var colValue in colDatas)
-                    {
+                    {   
+                        LogHelpers.Write(columns[colIndex] + " - " + colValue.Text);
                         _tableDatacollections.Add(new TableDatacollection
                         {
                             RowNumber = rowIndex,
                             ColumnName = columns[colIndex].Text != "" ?
-                                         columns[colIndex].Text : colIndex.ToString(),
+                            columns[colIndex].Text : colIndex.ToString(),
                             ColumnValue = colValue.Text,
                             ColumnSpecialValues = GetControl(colValue)
                         });
@@ -73,7 +76,6 @@ namespace EAAutoFramework.Helpers
 
             return columnSpecialValue;
         }
-
 
         public static void PerformActionOnCell(string columnIndex, string refColumnName, string refColumnValue, string controlToOperate = null)
         {
@@ -124,10 +126,7 @@ namespace EAAutoFramework.Helpers
                     yield return table.RowNumber;
             }
         }
-
-
     }
-
 
     public class TableDatacollection
     {
@@ -142,5 +141,4 @@ namespace EAAutoFramework.Helpers
         public IEnumerable<IWebElement> ElementCollection { get; set; }
         public string ControlType { get; set; }
     }
-
 }
