@@ -107,6 +107,7 @@
     <Compile Include="HookInitialize.cs" />
     <Compile Include="Pages\CreateEmployeePage.cs" />
     <Compile Include="Pages\DeletePage.cs" />
+    <Compile Include="Pages\EditEmployeePage.cs" />
     <Compile Include="Pages\EmployeeListPage.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\LoginPage.cs" />

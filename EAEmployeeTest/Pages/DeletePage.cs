@@ -18,14 +18,14 @@ namespace EAEmployeeTest.Pages
         {
             //var deleteBtns = DriverContext.Driver.FindElements(By.LinkText("Delete"));
             var wait = new WebDriverWait(DriverContext.Driver, new TimeSpan(0, 0, 30));
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("body > div.container.body-content > div > form > div > input")));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("body > div.container.body-content > div > form > div > input")));
             deleteBtn.Click();
         }
 
         public EmployeeListPage GoBackToList()
         {
             var wait = new WebDriverWait(DriverContext.Driver, new TimeSpan(0, 0, 30));
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Back to List")));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.LinkText("Back to List")));
             backToListBtn.Click();
             return GetInstance<EmployeeListPage>();
         }

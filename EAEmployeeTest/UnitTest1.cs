@@ -11,6 +11,7 @@ using OpenQA.Selenium;
 using Sikuli4Net.sikuli_UTIL;
 //using Sikuli4Net.sikuli_REST;
 using SikuliSharp;
+using OpenQA.Selenium.Support.UI;
 
 namespace EAEmployeeTest
 {
@@ -19,11 +20,17 @@ namespace EAEmployeeTest
     {
         // must have App.config in it's local directory for you not to get a null pointer exception
         // string url = ConfigReader.InitializeTest();
+
+        public void LoadCredentials()
+        {
+            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
+            ExcelHelpers.PopulateInCollection(fileName);
+        }
         
         [TestMethod]
         public void GoToAboutPage()
         {
-            
+
             //OpenBrowser(BrowserType.InternetExplorer);
             //DriverContext.Browser.GoToUrl(url); 
 
@@ -34,12 +41,22 @@ namespace EAEmployeeTest
             //DriverContext.Driver.Navigate().GoToUrl(Settings.AUT);
             //LogHelpers.Write("Navigated to the url!");
 
-            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
-            ExcelHelpers.PopulateInCollection(fileName);
+            LoadCredentials();
 
             CurrentPage = GetInstance<HomePage>();
             CurrentPage.As<HomePage>().ClickAboutTab();
             Thread.Sleep(3000);
+            DriverContext.Driver.Quit();
+        }
+
+        [TestMethod]
+        public void ClickUdemyLink()
+        {
+            LoadCredentials();
+
+            CurrentPage = GetInstance<HomePage>();
+            CurrentPage.As<HomePage>().ClickUdemyBtn();
+            Thread.Sleep(10000);
             DriverContext.Driver.Quit();
         }
 
@@ -66,8 +83,7 @@ namespace EAEmployeeTest
         [TestMethod]
         public void DeleteEmployee()
         {
-            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
-            ExcelHelpers.PopulateInCollection(fileName);
+            LoadCredentials();
 
             CurrentPage = GetInstance<HomePage>();
             CurrentPage = CurrentPage.As<HomePage>().ClickLogin();
@@ -75,8 +91,7 @@ namespace EAEmployeeTest
             CurrentPage = CurrentPage.As<LoginPage>().ClickLoginButton();
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
             CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
-            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            CurrentPage = CurrentPage.As<EmployeeListPage>().DeleteEmployee(0);
+            CurrentPage = CurrentPage.As<EmployeeListPage>().DeleteEmployee(1);
             //CurrentPage = CurrentPage.As<DeletePage>().GoBackToList();
             CurrentPage.As<DeletePage>().ConfirmDelete();
             Thread.Sleep(3000);
@@ -84,10 +99,28 @@ namespace EAEmployeeTest
         }
 
         [TestMethod]
+        public void EditEmployee()
+        {
+            LoadCredentials();
+
+            CurrentPage = GetInstance<HomePage>();
+            CurrentPage = CurrentPage.As<HomePage>().ClickLogin();
+            CurrentPage.As<LoginPage>().Login(ExcelHelpers.ReadData(1, "UserName"), ExcelHelpers.ReadData(1, "Password"));
+            CurrentPage = CurrentPage.As<LoginPage>().ClickLoginButton();
+            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
+            //DriverContext.Driver.Navigate().Refresh();
+            CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
+            CurrentPage = CurrentPage.As<EmployeeListPage>().ClickEdit(1);
+            CurrentPage.As<EditEmployeePage>().UpdateName("Prashanth 2");
+            CurrentPage.As<EditEmployeePage>().ClickSaveEditBtn();
+            Thread.Sleep(3000);
+            DriverContext.Driver.Quit();
+        }
+
+        [TestMethod]
         public void CreateEmployee()
         {
-            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
-            ExcelHelpers.PopulateInCollection(fileName);
+            LoadCredentials();
 
             CurrentPage = GetInstance<HomePage>();
             //CurrentPage.As<HomePage>().CheckIfLoginExist();
@@ -117,39 +150,11 @@ namespace EAEmployeeTest
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
             var table = CurrentPage.As<EmployeeListPage>().GetEmployeeList();
                 
-            // ~ 17 mins to execute
+            // ~ 17-30 mins to execute
             HtmlTableHelper.ReadTable(table);
             HtmlTableHelper.PerformActionOnCell("1", "Name", "Karthik", "Delete");
             Thread.Sleep(3000);
             DriverContext.Driver.Quit();
         }
-
-        /*
-        [TestMethod]
-        public void TableOperation()
-        {
-            
-            LogHelpers.CreateLogFile();
-            InternetExplorerOptions options = new InternetExplorerOptions();
-            options.EnableNativeEvents = false;
-            DriverContext.Driver = new InternetExplorerDriver(options);
-            DriverContext.Driver.Navigate().GoToUrl(Settings.AUT);
-
-            string fileName = Environment.CurrentDirectory.ToString() + "\\Data\\Login.xlsx";
-            ExcelHelpers.PopulateInCollection(fileName);
-
-            CurrentPage = GetInstance<LoginPage>();
-            CurrentPage.As<LoginPage>().ClickLoginLink();
-            CurrentPage.As<LoginPage>().Login(ExcelHelpers.ReadData(1, "UserName"), ExcelHelpers.ReadData(1, "Password"));
-            // https://stackoverflow.com/questions/5574802/selenium-2-0b3-ie-webdriver-click-not-firing
-            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            CurrentPage = CurrentPage.As<LoginPage>().ClickEmployeeList();
-            DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            DriverContext.Driver.WaitForPageLoaded();
-            var table = CurrentPage.As<EmployeeListPage>().GetEmployeeList();
-            HtmlTableHelper.ReadTable(table);
-            DriverContext.Driver.Quit();
-            //HtmlTableHelper.PerformActionOnCell("5", "Name", "Ramesh", "Edit");
-        }*/
     }
 }
