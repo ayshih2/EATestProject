@@ -12,6 +12,7 @@ using Sikuli4Net.sikuli_UTIL;
 //using Sikuli4Net.sikuli_REST;
 using SikuliSharp;
 using OpenQA.Selenium.Support.UI;
+using Sikuli4Net.sikuli_REST;
 
 namespace EAEmployeeTest
 {
@@ -63,21 +64,23 @@ namespace EAEmployeeTest
         [TestMethod]
         public void TestSikuli()
         {
-
-            /*Pattern visitNowBtn = new Pattern(@"C:\Patterns\RegisterButton.png");
+            APILauncher launcher = new APILauncher(true);
+            launcher.Start();
+            Pattern visitNowBtn = new Pattern(@"C:\Patterns\RegisterButton.png");
             Screen src = new Screen();
             src.Click(visitNowBtn);
-            //launch.Stop();
+            
             Thread.Sleep(3000);
-            //DriverContext.Driver.Quit();*/
+            launcher.Stop();
+            //DriverContext.Driver.Quit();
 
-            using (var session = Sikuli.CreateSession())
+            /*using (var session = Sikuli.CreateSession())
             {
                 //Login
                 var username = Patterns.FromFile(@"C:\Patterns\RegisterButton.png", 0.9f);
                 session.Click(username);
 
-            }
+            }*/
         }
 
         [TestMethod]
@@ -108,10 +111,10 @@ namespace EAEmployeeTest
             CurrentPage.As<LoginPage>().Login(ExcelHelpers.ReadData(1, "UserName"), ExcelHelpers.ReadData(1, "Password"));
             CurrentPage = CurrentPage.As<LoginPage>().ClickLoginButton();
             DriverContext.Driver.SwitchTo().Window(DriverContext.Driver.CurrentWindowHandle);
-            //DriverContext.Driver.Navigate().Refresh();
+            DriverContext.Driver.Navigate().Refresh();
             CurrentPage = CurrentPage.As<HomePage>().ClickEmployeeList();
-            CurrentPage = CurrentPage.As<EmployeeListPage>().ClickEdit(1);
-            CurrentPage.As<EditEmployeePage>().UpdateName("Prashanth 2");
+            CurrentPage = CurrentPage.As<EmployeeListPage>().ClickEdit(0);
+            CurrentPage.As<EditEmployeePage>().UpdateSalary("4000");
             CurrentPage.As<EditEmployeePage>().ClickSaveEditBtn();
             Thread.Sleep(3000);
             DriverContext.Driver.Quit();
